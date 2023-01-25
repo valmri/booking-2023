@@ -21,6 +21,12 @@ class ShowController extends AbstractController
         ]);
     }
 
+    #[Route('/map', name: 'app_show_map', methods: ['GET'])]
+    public function map()
+    {
+        return $this->render('show/map.html.twig');
+    }
+
     #[Route('/new', name: 'app_show_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ShowRepository $showRepository): Response
     {

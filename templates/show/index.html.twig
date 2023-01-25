@@ -8,20 +8,23 @@
 			<div class="col-sm-4 p-2">
 				<div class="card">
 					<div class="card-header">
+						<span class="badge text-bg-info float-end">
+							<big>{{ show.dateStart ? show.dateStart|date('d') : '' }}</big>
+							<br/>
+							{{ show.dateStart ? show.dateStart|date('M') : '' }}<br/>
+							{{ show.dateStart ? show.dateStart|date('Y') : '' }}
+						</span>
+
 						<h4 class="card-title">{{ show.name }}</h4>
 					</div>
 					<div class="card-body">
-                        <p>
-                            {{ show.description }}
-                        </p>
-                        <code>
-						{{ show.dateStart ? show.dateStart|date('d/m/Y H:i') : '' }}
-                        &rarr;
-						{{ show.dateEnd ? show.dateEnd|date('H:i') : '' }}
-                        </code>
+						<p>
+							{{ show.description }}
+						</p>
 					</div>
 					<div class="card-footer">
 						<td>
+                            <a class="btn btn-primary float-start" href="{{ path('app_show_map') }}">plan</a>
 							<a class="btn btn-primary float-end" href="{{ path('app_show_edit', {'id': show.id}) }}">éditer</a>
 						</td>
 					</div>
@@ -32,7 +35,7 @@
 		{% endfor %}
 	</div>
 
-    <hr/>
+	<hr/>
 
 	<a class="btn btn-success" href="{{ path('app_show_new') }}">Ajouter</a>
 {% endblock %}
