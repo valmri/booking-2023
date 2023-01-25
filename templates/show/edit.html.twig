@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Édition d'un spectacle</h2>
+
+    {{ include('show/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <hr/>
+
+    {{ include('show/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h2>Spectacles</h2>
+
+	<div class="row">
+		{% for show in shows %}
+			<div class="col-sm-4 p-2">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title">{{ show.name }}</h4>
+					</div>
+					<div class="card-body">
+                        <p>
+                            {{ show.description }}
+                        </p>
+                        <code>
+						{{ show.dateStart ? show.dateStart|date('Y-m-d H:i:s') : '' }}
+                        &rarr;
+						{{ show.dateEnd ? show.dateEnd|date('Y-m-d H:i:s') : '' }}
+                        </code>
+					</div>
+					<div class="card-footer">
+						<td>
+							<a class="btn btn-primary float-end" href="{{ path('app_show_edit', {'id': show.id}) }}">éditer</a>
+						</td>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<div class="alert alert-warning">Aucun spectacle!</div>
+		{% endfor %}
+	</div>
+
+    <hr/>
+
+	<a class="btn btn-success" href="{{ path('app_show_new') }}">Ajouter</a>
+{% endblock %}
