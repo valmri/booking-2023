@@ -21,11 +21,13 @@ class ShowType extends AbstractType
             ])
             ->add('date_start', null, [
                 'label' => 'Date de début',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'attr' => ['step' => '1']
             ])
             ->add('date_end', null, [
                 'label' => 'Date de fin',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'attr' => ['step' => '1']
             ])
             ->add('categories', null, [
                 'label' => 'Catégories'
