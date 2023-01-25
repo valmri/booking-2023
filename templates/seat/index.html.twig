@@ -5,6 +5,17 @@
 {% block body %}
     <h2>Places</h2>
 
+    <div class="alert alert-info">
+        Ce formulaire permet de générer les places dans la base de données:
+
+        <ul>
+            <li>Les rangées sont numérotées A, B, C, ...</li>
+            <li>Les sièges de chaque rangée sont numérotés 1, 2, 3, 4 ...</li>
+        </ul>
+
+        (Par exemple le siège C21 est le 21ème siège de la rangée C.)
+    </div>
+
     {{ form(form) }}
 
     <hr/>

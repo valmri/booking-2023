@@ -15,9 +15,9 @@
                             {{ show.description }}
                         </p>
                         <code>
-						{{ show.dateStart ? show.dateStart|date('Y-m-d H:i:s') : '' }}
+						{{ show.dateStart ? show.dateStart|date('d/m/Y H:i') : '' }}
                         &rarr;
-						{{ show.dateEnd ? show.dateEnd|date('Y-m-d H:i:s') : '' }}
+						{{ show.dateEnd ? show.dateEnd|date('H:i') : '' }}
                         </code>
 					</div>
 					<div class="card-footer">
