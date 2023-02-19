@@ -7,6 +7,9 @@
 		{% for show in shows %}
 			<div class="col-sm-4 p-2">
 				<div class="card">
+					{% if show.affiche is not null %}
+					<img src="/uploads/affiches/{{ show.affiche }}" alt="{{ show.name }}" class="card-img-top">
+					{% endif %}
 					<div class="card-header">
 						<span class="badge text-bg-info float-end">
 							<big>{{ show.dateStart ? show.dateStart|date('d') : '' }}</big>

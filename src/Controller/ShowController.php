@@ -8,6 +8,7 @@ use App\Form\ShowType;
 use App\Repository\ShowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,6 +43,24 @@ class ShowController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $affiche = $form->get('affiche')->getData();
+
+            if ($affiche) {
+
+                $affiche_nom = uniqid() . '.' . $affiche->guessExtension();
+                try {
+                    $affiche->move(
+                        $this->getParameter('affiches_directory'),
+                        $affiche_nom
+                    );
+                } catch (FileException $e) {
+                    $erreur = $e;
+                }
+
+                $show->setAffiche($affiche_nom);
+            }
+
             $showRepository->save($show, true);
 
             return $this->redirectToRoute('app_show_index', [], Response::HTTP_SEE_OTHER);

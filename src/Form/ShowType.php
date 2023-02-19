@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Show;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,6 +32,9 @@ class ShowType extends AbstractType
             ])
             ->add('categories', null, [
                 'label' => 'Catégories'
+            ])
+            ->add('affiche', FileType::class, [
+                'label' => "Affiche (jpg, jpeg, png"
             ])
             ->add('ok', SubmitType::class);
     }

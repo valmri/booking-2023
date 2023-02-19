@@ -33,6 +33,9 @@ class Show
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $affiche = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -114,6 +117,18 @@ class Show
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getAffiche(): ?string
+    {
+        return $this->affiche;
+    }
+
+    public function setAffiche(?string $affiche): self
+    {
+        $this->affiche = $affiche;
 
         return $this;
     }
