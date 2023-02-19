@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Configuration;
 use App\Entity\Show;
 use App\Form\ShowType;
 use App\Repository\ShowRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowController extends AbstractController
 {
     #[Route('/', name: 'app_show_index', methods: ['GET'])]
-    public function index(ShowRepository $showRepository): Response
+    public function index(ShowRepository $showRepository, EntityManagerInterface $entityManager): Response
     {
+        $configuration = $entityManager->find(Configuration::class, 1);
+
         return $this->render('show/index.html.twig', [
             'shows' => $showRepository->findAll(),
+            'configuration' => $configuration
         ]);
     }
 
@@ -28,8 +33,10 @@ class ShowController extends AbstractController
     }
 
     #[Route('/new', name: 'app_show_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ShowRepository $showRepository): Response
+    public function new(Request $request, ShowRepository $showRepository, EntityManagerInterface $entityManager): Response
     {
+        $configuration = $entityManager->find(Configuration::class, 1);
+
         $show = new Show();
         $form = $this->createForm(ShowType::class, $show);
         $form->handleRequest($request);
@@ -43,6 +50,7 @@ class ShowController extends AbstractController
         return $this->renderForm('show/new.html.twig', [
             'show' => $show,
             'form' => $form,
+            'configuration' => $configuration
         ]);
     }
 

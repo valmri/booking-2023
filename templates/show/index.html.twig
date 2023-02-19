@@ -16,6 +16,12 @@
 						</span>
 
 						<h4 class="card-title">{{ show.name }}</h4>
+
+						{% set categories =  [] %}
+						{% for categorie in  show.categories %}
+							{% set categories = categories|merge([categorie.name]) %}
+						{% endfor %}
+						<i>{{ categories|join('<span class="text-secondary mx-1">//</span>')|raw }}</i>
 					</div>
 					<div class="card-body">
 						<p>
