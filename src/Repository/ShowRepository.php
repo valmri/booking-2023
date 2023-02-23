@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Show;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,28 +41,18 @@ class ShowRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Show[] Returns an array of Show objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findRecentShow(): array
+    {
+        $dateDuJour = new DateTime('now');
 
-//    public function findOneBySomeField($value): ?Show
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $shows = $this->createQueryBuilder('s')
+            ->andWhere('s.date_end >= :dateDuJour')
+            ->andWhere('s.date_start >= :dateDuJour')
+            ->orderBy('s.date_start')
+            ->setParameter('dateDuJour', $dateDuJour);
+
+        $paginator = new Paginator($shows, true);
+
+        return $paginator->getQuery()->getResult();
+    }
 }

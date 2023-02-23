@@ -21,8 +21,10 @@ class ShowController extends AbstractController
     {
         $configuration = $entityManager->find(Configuration::class, 1);
 
+        $shows = $showRepository->findRecentShow();
+
         return $this->render('show/index.html.twig', [
-            'shows' => $showRepository->findAll(),
+            'shows' => $shows,
             'configuration' => $configuration
         ]);
     }
