@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ShowRepository::class)]
 #[ORM\Table(name: '`show`')]
@@ -19,21 +20,34 @@ class Show
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\LessThan(
+        propertyPath: 'date_end',
+        message: 'La date de début doit être antérieur à la date de fin'
+
+    )]
     private ?\DateTimeInterface $date_start = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan(
+        propertyPath: 'date_start',
+        message: 'La date de fin doit être postérieure à la date de début'
+
+    )]
     private ?\DateTimeInterface $date_end = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'shows')]
     private Collection $categories;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Image]
     private ?string $affiche = null;
 
     public function __construct()
