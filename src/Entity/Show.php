@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator as AcmeAssert;
 
 #[ORM\Entity(repositoryClass: ShowRepository::class)]
 #[ORM\Table(name: '`show`')]
@@ -29,6 +30,7 @@ class Show
         message: 'La date de début doit être antérieur à la date de fin'
 
     )]
+    #[AcmeAssert\CreneauHoraire]
     private ?\DateTimeInterface $date_start = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

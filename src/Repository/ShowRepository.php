@@ -55,4 +55,21 @@ class ShowRepository extends ServiceEntityRepository
 
         return $paginator->getQuery()->getResult();
     }
+
+    public function isSameCreneauHoraire(DateTime $date):bool {
+
+        $result = true;
+
+        $show = $this->createQueryBuilder('s')
+            ->andWhere('s.date_start = :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult();
+
+        if($show) {
+            $result = false;
+        }
+
+        return $result;
+    }
 }
