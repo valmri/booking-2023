@@ -16,8 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/seat')]
 class SeatController extends AbstractController
 {
-    #[Route('/', name: 'app_seat_index', methods: ['POST'])]
-    public function index(EntityManagerInterface $entityManager, Request $request): Response
+    #[Route('/', name: 'app_seat_index', methods: ['POST','GET'])]
+    public function index(EntityManagerInterface $entityManager, Request $request, SeatRepository $seatRepository): Response
     {
         $configuration = $entityManager->find(Configuration::class, 1);
         $form = $this->createForm(GenerateSeatsFormType::class, [
@@ -25,6 +25,8 @@ class SeatController extends AbstractController
             'seat_per_rows' => 8
         ]);
         $form->handleRequest($request);
+
+        dump([0]);
 
         if($form->isSubmitted() && $form->isValid()) {
 
@@ -35,17 +37,58 @@ class SeatController extends AbstractController
             // Génération des places
             $rangees = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
-            for ($i = 0; $i < $nb_rangees; $i++) {
-                $str = '';
-                for ($j = 0; $j < $nb_places_par_rangees; $j++) {
-                    $str = $rangees[$i];
-                    $num_place = $j + 1;
-                    $str .= $num_place;
+            // Faire une verification sur l'existance des places
+            $derniereValeur = $seatRepository->findLastId();
 
-                    $seat = new Seat();
-                    $seat->setName($str);
+            if($derniereValeur) {
+                $derniereValeur = str_split($derniereValeur[0]->getName());
+
+                $derniereRangee = $derniereValeur[0];
+                $dernierNumPlace = (int)$derniereValeur[1];
+
+                $derniereRangeeKey = array_search($derniereRangee, $rangees) + 1;
+
+                if($nb_rangees > $derniereRangeeKey) {
+                    for ($i = $derniereRangeeKey; $i < $nb_rangees; $i++) {
+                        $str = '';
+                        for ($j = 0; $j < $nb_places_par_rangees; $j++) {
+
+                            $str = $rangees[$i];
+
+                            $num_place = $j + 1;
+
+                            $str .= $num_place;
+
+                            $seat = new Seat();
+                            $seat->setName($str);
+                            $seatRepository->save($seat, true);
+
+                        }
+                    }
                 }
+
+                if($nb_places_par_rangees > $dernierNumPlace) {
+                    for ($i = 0; $i < $nb_rangees; $i++) {
+                        $str = '';
+                        for ($j = $dernierNumPlace; $j < $nb_places_par_rangees; $j++) {
+
+                            $str = $rangees[$i];
+
+                            $num_place = $j + 1;
+
+                            $str .= $num_place;
+
+                            $seat = new Seat();
+                            $seat->setName($str);
+                            $seatRepository->save($seat, true);
+
+                        }
+                    }
+                }
+
+
             }
+
         }
 
         return $this->render('seat/index.html.twig', [

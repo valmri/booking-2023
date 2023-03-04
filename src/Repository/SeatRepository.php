@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Seat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @extends ServiceEntityRepository<Seat>
@@ -37,6 +38,14 @@ class SeatRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findLastId() {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.id','desc')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**
