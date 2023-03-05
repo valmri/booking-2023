@@ -40,12 +40,34 @@ class SeatRepository extends ServiceEntityRepository
         }
     }
 
-    public function findLastId() {
+
+    /**
+     * findLAstIs()
+     * Permet de retourner le dernier enregistrement en base
+     * @return array
+     */
+    public function findLastId(): array
+    {
         return $this->createQueryBuilder('s')
             ->orderBy('s.id','desc')
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * getNbPlaces()
+     * Permet de recupérer le nombre de places
+     * @return int
+     */
+    public function getNbPlaces(): int
+    {
+        $recherche = $this->createQueryBuilder('s')
+                        ->select('count(s.id)')
+                        ->getQuery()
+                        ->getResult();
+
+        return $recherche ? $recherche[0][1] : 0;
     }
 
 //    /**
