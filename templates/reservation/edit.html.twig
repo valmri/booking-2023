@@ -3,6 +3,12 @@
 {% block body %}
     <h2>Édition d'une réservation</h2>
 
+    {% if erreur is not null %}
+        <div class="alert alert-danger" role="alert">
+            {{ erreur }}
+        </div>
+    {% endif %}
+
     {{ include('reservation/_form.html.twig', {'button_label': 'Update'}) }}
 
     <hr/>
