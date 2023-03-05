@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Configuration;
 use App\Entity\Seat;
 use App\Form\GenerateSeatsFormType;
-use App\Form\SeatType;
 use App\Repository\SeatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
