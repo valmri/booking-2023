@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Configuration;
 use App\Entity\Show;
 use App\Form\ShowType;
+use App\Repository\SeatRepository;
 use App\Repository\ShowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,15 +17,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowController extends AbstractController
 {
     #[Route('/', name: 'app_show_index', methods: ['GET'])]
-    public function index(ShowRepository $showRepository, EntityManagerInterface $entityManager): Response
+    public function index(ShowRepository $showRepository, EntityManagerInterface $entityManager, SeatRepository $seatRepository): Response
     {
         $configuration = $entityManager->find(Configuration::class, 1);
 
         $shows = $showRepository->findRecentShow();
 
+        $nb_places = $seatRepository->getNbPlaces();
+
         return $this->render('show/index.html.twig', [
             'shows' => $shows,
-            'configuration' => $configuration
+            'configuration' => $configuration,
+            'nb_places' => $nb_places
         ]);
     }
 
