@@ -39,6 +39,22 @@ class ReservationRepository extends ServiceEntityRepository
         }
     }
 
+    public function isReserve(int $user_id, int $show_id):bool
+    {
+        $resultat = false;
+
+        $recherche = $this->createQueryBuilder('s')
+            ->select('count(s.id)')
+            ->getQuery()
+            ->getResult();
+
+        if($recherche) {
+            $resultat = true;
+        }
+
+        return $resultat;
+    }
+
 //    /**
 //     * @return Reservation[] Returns an array of Reservation objects
 //     */

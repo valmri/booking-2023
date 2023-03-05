@@ -19,24 +19,62 @@ class ReservationController extends AbstractController
     public function index(EntityManagerInterface $entityManager, Show $show, Request $request, ReservationRepository $reservationRepository): Response
     {
         $configuration = $entityManager->find(Configuration::class, 1);
+        $user = $this->getUser();
+        $est_reserve = $reservationRepository->isReserve((int)$user->getUserIdentifier(), (int)$show->getId());
 
         $reservation = new Reservation();
         $reservation->setDate(new \DateTime());
         $reservation->setSpectacle($show);
-        $reservation->setUser($this->getUser());
+        $reservation->setUser($user);
+        $form = $this->createForm(ReservationType::class, $reservation);
+
+        $form->handleRequest($request);
+
+        if(!$est_reserve) {
+            if($form->isSubmitted()) {
+
+                $reservationRepository->save($reservation, true);
+
+            }
+
+            $result = $this->render('reservation/new.html.twig', [
+                'controller_name' => 'ReservationController',
+                'configuration' =>$configuration,
+                'form' => $form->createView()
+            ]);
+        } else {
+            $result = $this->redirectToRoute('app_reservation_edit', [
+                'id' => $show->getId()
+            ]);
+        }
+
+        return $result;
+
+    }
+
+    #[Route('/reservation/edit/{id}', name: 'app_reservation_edit', methods: ['POST','GET'])]
+    public function edit(EntityManagerInterface $entityManager, Show $show, Request $request, ReservationRepository $reservationRepository) {
+        $configuration = $entityManager->find(Configuration::class, 1);
+        $user = $this->getUser();
+
+        $reservation = $reservationRepository->findOneBy([
+            'user' => $user,
+            'spectacle' => $show
+        ]);
+        $reservation->setDate(new \DateTime());
+
         $form = $this->createForm(ReservationType::class, $reservation);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted()) {
-
             $reservationRepository->save($reservation, true);
         }
 
-        return $this->render('reservation/new.html.twig', [
+        return $this->render('reservation/edit.html.twig', [
             'controller_name' => 'ReservationController',
             'configuration' =>$configuration,
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 }

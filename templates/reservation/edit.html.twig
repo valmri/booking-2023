@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Édition d'une réservation</h2>
+
+    {{ include('reservation/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <hr/>
+
+{% endblock %}
