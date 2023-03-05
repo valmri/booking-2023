@@ -71,9 +71,11 @@ class ShowController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_show_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Show $show, ShowRepository $showRepository): Response
+    #[Route('/edit/{id}', name: 'app_show_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Show $show, ShowRepository $showRepository, EntityManagerInterface $entityManager): Response
     {
+        $configuration = $entityManager->find(Configuration::class, 1);
+
         $form = $this->createForm(ShowType::class, $show);
         $form->handleRequest($request);
 
@@ -86,10 +88,11 @@ class ShowController extends AbstractController
         return $this->renderForm('show/edit.html.twig', [
             'show' => $show,
             'form' => $form,
+            'configuration' => $configuration
         ]);
     }
 
-    #[Route('/{id}', name: 'app_show_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_show_delete', methods: ['POST'])]
     public function delete(Request $request, Show $show, ShowRepository $showRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$show->getId(), $request->request->get('_token'))) {
