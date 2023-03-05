@@ -26,8 +26,6 @@ class SeatController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        dump([0]);
-
         if($form->isSubmitted() && $form->isValid()) {
 
             // Récupération des données
@@ -86,6 +84,24 @@ class SeatController extends AbstractController
                     }
                 }
 
+            } else {
+
+                for ($i = 0; $i < $nb_rangees; $i++) {
+                    $str = '';
+                    for ($j = 0; $j < $nb_places_par_rangees; $j++) {
+
+                        $str = $rangees[$i];
+
+                        $num_place = $j + 1;
+
+                        $str .= $num_place;
+
+                        $seat = new Seat();
+                        $seat->setName($str);
+                        $seatRepository->save($seat, true);
+
+                    }
+                }
 
             }
 
