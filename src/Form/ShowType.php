@@ -34,7 +34,8 @@ class ShowType extends AbstractType
                 'label' => 'Catégories'
             ])
             ->add('affiche', FileType::class, [
-                'label' => "Affiche (jpg, jpeg, png)"
+                'label' => "Affiche (jpg, jpeg, png)",
+                'data_class' => null
             ])
             ->add('ok', SubmitType::class);
     }

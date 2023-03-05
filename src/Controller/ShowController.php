@@ -84,6 +84,21 @@ class ShowController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $affiche = $form->get('affiche')->getData();
+
+            if ($affiche) {
+
+                $affiche_nom = uniqid() . '.' . $affiche->guessExtension();
+
+                $affiche->move(
+                    $this->getParameter('affiches_directory'),
+                    $affiche_nom
+                );
+
+                $show->setAffiche($affiche_nom);
+            }
+
             $showRepository->save($show, true);
 
             return $this->redirectToRoute('app_show_index', [], Response::HTTP_SEE_OTHER);

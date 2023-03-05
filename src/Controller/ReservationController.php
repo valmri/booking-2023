@@ -45,6 +45,7 @@ class ReservationController extends AbstractController
                     $erreur = "Cette place a déjà été réservée.";
                 } else {
                     $reservationRepository->save($reservation, true);
+                    return $this->redirectToRoute('app_show_index', [], Response::HTTP_SEE_OTHER);
                 }
 
             }
@@ -90,6 +91,7 @@ class ReservationController extends AbstractController
                 $erreur = "Cette place a déjà été réservée.";
             } else {
                 $reservationRepository->save($reservation, true);
+                return $this->redirectToRoute('app_show_index', [], Response::HTTP_SEE_OTHER);
             }
 
         }
