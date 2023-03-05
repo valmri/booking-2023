@@ -33,9 +33,12 @@ class ShowController extends AbstractController
     }
 
     #[Route('/map', name: 'app_show_map', methods: ['GET'])]
-    public function map()
+    public function map(EntityManagerInterface $entityManager)
     {
-        return $this->render('show/map.html.twig');
+        $configuration = $entityManager->find(Configuration::class, 1);
+        return $this->render('show/map.html.twig', [
+            'configuration' => $configuration
+        ]);
     }
 
     #[Route('/new', name: 'app_show_new', methods: ['GET', 'POST'])]
