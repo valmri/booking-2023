@@ -13,10 +13,7 @@ class ReservationType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('date')
             ->add('seat')
-            ->add('user')
-            ->add('spectacle')
         ;
     }
 
