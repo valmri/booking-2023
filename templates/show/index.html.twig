@@ -37,6 +37,9 @@
 							{% if is_granted('ROLE_ADMIN') %}
 							<a class="btn btn-primary float-end" href="{{ path('app_show_edit', {'id': show.id}) }}">éditer</a>
 							{% endif %}
+							{% if is_granted('ROLE_USER') %}
+								<a class="btn btn-primary float-end" href="{{ path('app_reservation', {'id': show.id}) }}">réserver</a>
+							{% endif %}
 						</td>
 					</div>
 				</div>
